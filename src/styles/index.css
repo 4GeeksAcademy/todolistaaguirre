@@ -41,6 +41,8 @@ body {
     border-bottom: 10px;
 }
 
+
+
 .formulario-tareas__input{
     border: none;
     width: 100%;
@@ -51,6 +53,15 @@ body {
 
 
 /*tareas*/
-.tarea-creadas{
+.tareas-creadas{
     list-style: none;
+}
+
+.fa {
+    cursor: pointer;
+}
+
+.valores-tarea{
+    align-items: center;
+    
 }
