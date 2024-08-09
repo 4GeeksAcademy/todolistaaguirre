@@ -1,15 +1,7 @@
-/* 
 
-    You can write your own styles here...
-    
-    
-    ...Or you can use the import command to include 
-    other sylesheets into your bunde as well, e.j:
-    
-    import 'relative/path/to/stylesheet.scss';
 */
 body {
-    background: rgb(252, 248, 248);
+    background: rgb(242, 239, 239);
 }
 
 .contenedor {
@@ -21,11 +13,12 @@ body {
     border-radius: 3px;
     justify-content: center;
     margin: auto;
-    margin-top: 10px;
+    margin-top: 55px;
+    background: rgb(243, 240, 240);
 
 }
 
-.header{
+.header {
     background: rgb(146, 196, 248);
     border-radius: 5px;
     padding: 10px;
@@ -34,34 +27,34 @@ body {
 
 /**formulario**/
 
-.formulario-tareas{
+.formulario-tareas {
     padding: 12px;
     width: 100%;
     font-size: 20px;
     border-bottom: 10px;
 }
 
-
-
-.formulario-tareas__input{
+.formulario-tareas__input {
     border: none;
     width: 100%;
     padding: 15px;
-    font-family: 'Times New Roman', Times, serif;
     border-bottom: 1px solid rgb(153, 132, 247);
 }
 
 
 /*tareas*/
-.tareas-creadas{
+.tareas-creadas {
+    margin-top: 10px;
     list-style: none;
+    border-bottom: 0.5px solid rgb(221, 215, 249);;
 }
 
 .fa {
     cursor: pointer;
+    
 }
 
-.valores-tarea{
-    align-items: center;
-    
+.valores-tarea {
+    padding: 10px;
+    text-align: center;
 }

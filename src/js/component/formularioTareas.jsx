@@ -4,6 +4,7 @@ const FormularioTareas = () => {
 
     const [inputValor, setInputValor] = useState('');
 
+    const [actualizarTarea, setActualizarTarea] = useState(true);
     const [toDoList, setToDoList] = useState([]);
     const handleKeyPress = (e) => {
         if (e.key === 'Enter') {
@@ -16,6 +17,8 @@ const FormularioTareas = () => {
             }
             setInputValor("");
         }
+
+
 
     }
     return (
@@ -30,17 +33,20 @@ const FormularioTareas = () => {
                     onKeyDown={handleKeyPress}
                 />
 
-                {toDoList.map((a, index) => <li className="tareas-creadas" key={index}>{a}{" "} <i className="fa fa-solid fa-trash"
-                    onClick={() => setToDoList(toDoList.filter((u, uIndex) => index != uIndex))}></i></li>)}
+                {toDoList.map((a, index) =>
+                    <li className="tareas-creadas" key={index}>{a}
+                        <i className="fa fa-solid fa-trash"
+                            onClick={() => setToDoList(toDoList.filter((u, uIndex) => index != uIndex))} > </i>
+                    </li>)}
 
             </ul>
             {
-             toDoList.length == 1 && <div className="valores-tarea">Tienes {toDoList.length} tarea</div>
+                toDoList.length == 1 && <div className="valores-tarea">Tienes {toDoList.length} tarea</div>
             }
             {
-             toDoList.length != 1 && <div className="valores-tarea">Tienes {toDoList.length} tareas</div>
+                toDoList.length != 1 && <div className="valores-tarea">Tienes {toDoList.length} tareas</div>
             }
-            
+
         </div>
 
     );
