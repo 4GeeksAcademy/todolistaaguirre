@@ -2,9 +2,12 @@ import React, { useState } from "react";
 
 const FormularioTareas = () => {
 
+
+   
+
+
     const [inputValor, setInputValor] = useState('');
 
-    const [actualizarTarea, setActualizarTarea] = useState(true);
     const [toDoList, setToDoList] = useState([]);
     const handleKeyPress = (e) => {
         if (e.key === 'Enter') {
@@ -17,9 +20,6 @@ const FormularioTareas = () => {
             }
             setInputValor("");
         }
-
-
-
     }
     return (
         <div>
@@ -32,11 +32,15 @@ const FormularioTareas = () => {
                     onChange={(e) => setInputValor(e.target.value)}
                     onKeyDown={handleKeyPress}
                 />
-
+        
                 {toDoList.map((a, index) =>
                     <li className="tareas-creadas" key={index}>{a}
+                        <div className="iconos">
+                        <i className="faa fa-solid fa-trash"></i>
                         <i className="fa fa-solid fa-trash"
                             onClick={() => setToDoList(toDoList.filter((u, uIndex) => index != uIndex))} > </i>
+                        
+                        </div>
                     </li>)}
 
             </ul>

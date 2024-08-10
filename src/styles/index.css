@@ -1,6 +1,4 @@
-
-*/
-body {
+*/ body {
     background: rgb(242, 239, 239);
 }
 
@@ -37,23 +35,61 @@ body {
 .formulario-tareas__input {
     border: none;
     width: 100%;
-    padding: 15px;
-    border-bottom: 1px solid rgb(153, 132, 247);
+    padding: 10px;
+    border-bottom: 1px solid gray;
+    margin-bottom: 10px;
+
 }
 
 
 /*tareas*/
 .tareas-creadas {
-    margin-top: 10px;
+  
     list-style: none;
-    border-bottom: 0.5px solid rgb(221, 215, 249);;
+    border-bottom: 0.5px solid rgb(221, 215, 249);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    transition: 0.3s ease;
+    height: 40px;
+    padding: 0 20px;
+    
+
+	
 }
 
-.fa {
-    cursor: pointer;
+.tareas-creadas:hover {
+    background-color: #d0dcfb;
+   
+}
+
+.tareas-creadas:hover .faa {
+    opacity: 1;
+    height:  100%;
+}
+
+
+.fa,
+.faa{
+    opacity: 0;
+    transition: 0.3s ease;
+    font-size: 15px;
+    padding-top: 10px;
     
 }
 
+.tareas-creadas:hover .fa {
+    opacity: 1;
+    height:  100%;
+}
+
+
+.iconos{
+    display: flex;
+    justify-content: end;
+}
+/**indicador numero de tareas ingresadas*/
 .valores-tarea {
     padding: 10px;
     text-align: center;
