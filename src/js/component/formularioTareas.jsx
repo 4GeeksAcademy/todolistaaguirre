@@ -27,7 +27,7 @@ const FormularioTareas = () => {
                 alert('Introduzca una tarea correcta')
             }
             setInputValor("");
-            setActualizar(true);
+            setActualizar(true); 
         }
     }
     return (
