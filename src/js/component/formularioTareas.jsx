@@ -46,17 +46,17 @@ const FormularioTareas = () => {
                 return resultado.json()
             })
             .then((data) => {
-                obtenerTareas()
+                obtenerTareas(data.tarea)
 
             })
     }
     //añado una funcion para agregar las tareas a mi api 
-    const agregarTarea = () => {
-        fetch("https://playground.4geeks.com/todo/todos/alejandraAguirre", { method: "POST",
+    const agregarTarea = (tarea) => {
+        fetch("https://playground.4geeks.com/todo/todos/alejandraAguirre", { method: 'POST',
             headers: {"content-Type": "application/json" },
             body: JSON/stringify({
-                 "label": inputValor,
-                 "is_done": false
+                 label: inputValor,
+                 is_done: false
             })
          })
         .then((resultado) => {
@@ -64,8 +64,10 @@ const FormularioTareas = () => {
             return resultado.json()
         })
         .then((data) => {
+            
             obtenerTareas()
-            setInputValor("")
+            inputValor("")
+            
         })
         .catch(()=>{
 
@@ -94,7 +96,10 @@ const FormularioTareas = () => {
                
 
                 //aqui agrego la nueva funcion para q se guarde en la api
-                agregarTarea();
+                
+                agregarTarea(tarea)
+                obtenerTareas(tarea)
+                
             }
         }
         return (
