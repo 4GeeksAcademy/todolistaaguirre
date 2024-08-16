@@ -1,4 +1,4 @@
-import { stringify } from "query-string";
+
 import React, { useEffect, useState } from "react";
 
 
@@ -18,135 +18,122 @@ const FormularioTareas = () => {
     const [actualizar, setActualizar] = useState(true);
     const [toDoList, setToDoList] = useState([]);
 
-    //uso la función para crear el usuario con url de la api. 
-    const obtenerTareas = () => {
+    //uso la función para crear el usuario con url de la api.
+
+    const obtenerUsuario = () => {
         fetch("https://playground.4geeks.com/todo/users/alejandraAguirre")
-            .then((resultado) => {
-                console.log(resultado);
-                if (resultado.ok === false) {
+            .then((respuesta) => {
+                console.log(respuesta);
+                if (respuesta.ok === false) { //Le pongo la condición para validar si dicho usuario existe, sino va a funcion crear. 
                     crearUsuario()
-                } else {
-                    return resultado.json()
+                } else { //en caso de si encontrar el usario, lo convierte en json. 
+                    return respuesta.json()
                 }
             })
             .then((data) => {
                 console.log(data);
-                setToDoList(data.todos)
+
             })
             .catch(() => {
 
             })
+
     }
 
-    //función creada para crear el usuario en caso de que no lo este o se borrara de la api dsps de las 24h (se recetea)
+
+    //función para crear el usuario en caso de que se borre de la API dsps de las 24h
     const crearUsuario = () => {
-        fetch("https://playground.4geeks.com/todo/users/alejandraAguirre", { method: "POST" })
-            .then((resultado) => {
-                console.log(resultado);
-                return resultado.json()
-            })
+        fetch("https://playground.4geeks.com/todo/users/alejandraAguirre", {
+            method: "POST"
+        })//lo unico requerido para crear un usuario nuevo segun api es USER_NAME
+            .then((respuesta) => {
+                console.log(respuesta);
+                return respuesta.json()
+            }) //ya cuando tengo mi usuario creado, accedo de nuevo a obtener usuario. 
             .then((data) => {
-                obtenerTareas(data.tarea)
-
+                obtenerUsuario()
             })
-    }
-    //añado una funcion para agregar las tareas a mi api 
-    const agregarTarea = (tarea) => {
-        fetch("https://playground.4geeks.com/todo/todos/alejandraAguirre", { method: 'POST',
-            headers: {"content-Type": "application/json" },
-            body: JSON/stringify({
-                 label: inputValor,
-                 is_done: false
-            })
-         })
-        .then((resultado) => {
-            console.log(resultado);
-            return resultado.json()
-        })
-        .then((data) => {
-            
-            obtenerTareas()
-            inputValor("")
-            
-        })
-        .catch(()=>{
 
-        })
+
+
+
     }
 
 
+
+    useEffect(() => {
         
+        obtenerUsuario()
+    }, [])
 
 
-        useEffect(() => {
-            obtenerTareas();
-        }, [])
 
-        const handleKeyPress = (e) => {
-            if (e.key === 'Enter') {
 
-                if (inputValor.trim().length > 0) {
-                    toDoList.push(inputValor);
-                }
-                else {
-                    alert('Introduzca una tarea correcta')
-                }
 
-                setActualizar(true);
-               
+    const handleKeyPress = (e) => {
+        if (e.key === 'Enter') {
 
-                //aqui agrego la nueva funcion para q se guarde en la api
-                
-                agregarTarea(tarea)
-                obtenerTareas(tarea)
-                
+            if (inputValor.trim().length > 0) {
+                toDoList.push(inputValor);
             }
+            else {
+                alert('Introduzca una tarea correcta')
+            }
+
+            setActualizar(true);
+            setInputValor("")
+
+
+            //aqui agrego la nueva funcion para q se guarde en la api
+
+
         }
-        return (
-            <div>
-                <ul className="formulario-tareas" >
-                    <input
-                        type="texto"
-                        className="formulario-tareas__input"
-                        placeholder="Ingresa tu tarea"
-                        value={inputValor}
-                        onChange={(e) => setInputValor(e.target.value)}
-                        onKeyDown={handleKeyPress}
-                    />
-
-                    {toDoList.map((tarea, index) =>
-                        <div className=" tareas-creadas">
-                            <input
-                                className="inputModificar"
-                                type="texto"
-                                placeholder={toDoList[index]}
-                                value={tarea.label}
-                                key={index}
-                                onChange={(e) => Modificar(e.target.value, index)}
-                                disabled={actualizar} />
-
-                            <div className="iconos">
-                                <button className="boton" type="submit" disabled={actualizar} onClick={() => setActualizar(true)}>Actualizar</button>
-                                <i className=" fa fa-solid fa-pen" onClick={() => setActualizar(false)}></i>
-                                <i className="fa fa-solid fa-trash"
-                                    onClick={() => setToDoList(toDoList.filter((u, uIndex) => index != uIndex))} > </i>
-
-                            </div>
-                        </div>
-                    )}
-
-                </ul>
-                {
-                    toDoList.length == 1 && <div className="valores-tarea">Tienes {toDoList.length} tarea</div>
-                }
-                {
-                    toDoList.length != 1 && <div className="valores-tarea">Tienes {toDoList.length} tareas</div>
-                }
-
-            </div >
-
-        );
     }
+    return (
+        <div>
+            <ul className="formulario-tareas" >
+                <input
+                    type="texto"
+                    className="formulario-tareas__input"
+                    placeholder="Ingresa tu tarea"
+                    value={inputValor}
+                    onChange={(e) => setInputValor(e.target.value)}
+                    onKeyDown={handleKeyPress}
+                />
+
+                {toDoList.map((a, index) =>
+                    <div className=" tareas-creadas" key={index}>
+                        <input
+                            className="inputModificar"
+                            type="texto"
+                            placeholder={toDoList[index]}
+                            value={a}
+                            key={index}
+                            onChange={(e) => Modificar(e.target.value, index)}
+                            disabled={actualizar} />
+
+                        <div className="iconos">
+                            <button className="boton" type="submit" disabled={actualizar} onClick={() => setActualizar(true)}>Actualizar</button>
+                            <i className=" fa fa-solid fa-pen" onClick={() => setActualizar(false)}></i>
+                            <i className="fa fa-solid fa-trash"
+                                onClick={() => setToDoList(toDoList.filter((u, uIndex) => index != uIndex))} > </i>
+
+                        </div>
+                    </div>
+                )}
+
+            </ul>
+            {
+                toDoList.length == 1 && <div className="valores-tarea">Tienes {toDoList.length} tarea</div>
+            }
+            {
+                toDoList.length != 1 && <div className="valores-tarea">Tienes {toDoList.length} tareas</div>
+            }
+
+        </div >
+
+    );
+}
 
 
-    export default FormularioTareas;
+export default FormularioTareas;
