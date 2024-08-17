@@ -90,9 +90,10 @@
     background-color: rgb(75, 246, 75);
     border: none;
 
-    
+
 }
-.inputModificar{
+
+.inputModificar {
     border: none;
 }
 
@@ -107,4 +108,13 @@
 .valores-tarea {
     padding: 10px;
     text-align: center;
+}
+
+.boton-borrar_todo {
+    background: rgb(215, 215, 244);
+    margin-bottom: 40px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+
 }

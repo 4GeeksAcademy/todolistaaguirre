@@ -6,9 +6,9 @@ const FormularioTareas = () => {
     //Esta constante sirve para forzar el renderizado y que se actualice el HTML con el valor que se va modificando
     const [ignored, forceUpdate] = React.useReducer(x => x + 1, 0);
 
-    const Modificar = (value, index) => {
+    const Modificar = (value, id) => {
 
-        toDoList[index] = value;
+        toDoList[id] = value;
 
         forceUpdate();
 
@@ -120,7 +120,7 @@ const FormularioTareas = () => {
             body: JSON.stringify(
                 {
                     "label": toDoList,
-                    "is_done": true
+                    "is_done": false
                 }
             ),
         })
@@ -129,14 +129,14 @@ const FormularioTareas = () => {
                 return respuesta.text() //string 
             })
             .then((data) => {
-                obtenerUsuario()
+               actualizar(data.id, data.label)
             })
             .catch((error) => {
                 console.log("No se encontraron tareas", error);
             })
     }
 
-    const borrarTodasTareas =()=>{
+    const borrarTodasTareas =(id)=>{
         fetch(`https://playground.4geeks.com/todo/todos/${id}`, {
             method: "DELETE",
         })
@@ -163,10 +163,6 @@ const FormularioTareas = () => {
         obtenerUsuario();
 
     }, [])
-
-
-
-
 
     const handleKeyPress = (e) => {
         if (e.key === 'Enter') {
@@ -199,15 +195,15 @@ const FormularioTareas = () => {
 
                 />
 
-                {toDoList.map((tarea, index) =>
+                {toDoList.map((tarea, id) =>
                     <div className=" tareas-creadas" key={tarea.id}>
                         <input
                             className="inputModificar"
                             type="texto"
                             placeholder={toDoList[tarea]}
                             value={tarea.label}
-
-                            onChange={(e) => Modificar(e.target.value, index)}
+                            
+                            onChange={(e) => Modificar(e.target.value,id)}
                             disabled={actualizar} />
 
                         <div className="iconos"  >
@@ -232,7 +228,7 @@ const FormularioTareas = () => {
             {
                 toDoList.length != 1 && <div className="valores-tarea">Tienes {toDoList.length} tareas</div>
             }
-
+            <button className="boton-borrar_todo" onClick={()=>toDoList.map(tarea =>borrarTodasTareas(tarea.id))}>Borra todas las tareas</button>
         </div >
 
     );
