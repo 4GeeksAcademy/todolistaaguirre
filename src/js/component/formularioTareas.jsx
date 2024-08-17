@@ -17,7 +17,9 @@ const FormularioTareas = () => {
     const [inputValor, setInputValor] = useState('');
     const [actualizar, setActualizar] = useState(true);
     const [toDoList, setToDoList] = useState([]);
+    
 
+    //CREO LAS 4 FUNCIONES PARA USAR FETCH: 
     //uso la función para crear el usuario con url de la api.
 
     const obtenerUsuario = () => {
@@ -32,12 +34,13 @@ const FormularioTareas = () => {
             })
             .then((data) => {
                 console.log(data);
+                setToDoList(data.todos)//todos dentro de data es el arreglo y lo quiero guardar en la lista q había creado. 
 
             })
-            .catch(() => {
+            .catch((error) => { //lo uso para capturar los errores 
+                console.log("Solicitud fallida", error);
 
             })
-
     }
 
 
@@ -53,17 +56,60 @@ const FormularioTareas = () => {
             .then((data) => {
                 obtenerUsuario()
             })
+            .catch((error) => {
+                console.log("Petición fallida", error);
 
-
-
-
+            })
     }
 
+    //función para agregar la tarea a la api 
+    const agregarTarea = () => {
+        fetch("https://playground.4geeks.com/todo/todos/alejandraAguirre", {
+            method: "POST",
+            headers: { "Content-type": "application/json" },
+            body: JSON.stringify(
+                {
+                    "label": inputValor,
+                    "is_done": false
+                })
+        })
+            .then((respuesta) => {
+                console.log(respuesta);
+                return respuesta.json()
+            })
+            .then((data) => {
+                obtenerUsuario()
+                setInputValor("")
+            })
+            .catch((error) => {
+                console.log("No se encontraron tareas", error);
 
+            })
+    }
+
+    //función para eliminar las tareas que tengo ya guardadas en la api 
+
+    const eliminarTarea = (id) => { ///id lo paso de manera dinamica para q lo busque lo edite. 
+        fetch(`https://playground.4geeks.com/todo/todos/${id}`, {
+            method: "DELETE",
+            headers: { "Content-type": "application/json" },
+        })
+            .then((respuesta) => {
+                console.log(respuesta);
+                return respuesta.text() //string 
+            })
+            .then((data) => {
+               obtenerUsuario()
+            })
+            .catch((error) => {
+                console.log("No se encontraron tareas", error);
+            })
+    }
 
     useEffect(() => {
-        
-        obtenerUsuario()
+
+        obtenerUsuario();
+       
     }, [])
 
 
@@ -75,23 +121,22 @@ const FormularioTareas = () => {
 
             if (inputValor.trim().length > 0) {
                 toDoList.push(inputValor);
+               
             }
             else {
                 alert('Introduzca una tarea correcta')
             }
 
-            setActualizar(true);
-            setInputValor("")
-
-
-            //aqui agrego la nueva funcion para q se guarde en la api
-
+            //  setActualizar(true); antes se encargaba de agregar la nueva tarea a la lista
+            //setInputValor("") lo tengo ya añadido en la función agregar tarea a la api. 
+            agregarTarea() //ahora lo sustituyo porque la tarea vendra de fuera, se guarda en la api
+           
 
         }
     }
     return (
-        <div>
-            <ul className="formulario-tareas" >
+        <div >
+            <ul className="formulario-tareas"  >
                 <input
                     type="texto"
                     className="formulario-tareas__input"
@@ -99,24 +144,27 @@ const FormularioTareas = () => {
                     value={inputValor}
                     onChange={(e) => setInputValor(e.target.value)}
                     onKeyDown={handleKeyPress}
+
                 />
 
-                {toDoList.map((a, index) =>
-                    <div className=" tareas-creadas" key={index}>
+                {toDoList.map((tarea) =>
+                    <div className=" tareas-creadas" key={tarea}>
                         <input
                             className="inputModificar"
                             type="texto"
-                            placeholder={toDoList[index]}
-                            value={a}
-                            key={index}
+                            placeholder={toDoList[tarea]}
+                            value={tarea.label}
+                            key={tarea.id}
                             onChange={(e) => Modificar(e.target.value, index)}
                             disabled={actualizar} />
 
-                        <div className="iconos">
+                        <div className="iconos"  >
                             <button className="boton" type="submit" disabled={actualizar} onClick={() => setActualizar(true)}>Actualizar</button>
                             <i className=" fa fa-solid fa-pen" onClick={() => setActualizar(false)}></i>
-                            <i className="fa fa-solid fa-trash"
-                                onClick={() => setToDoList(toDoList.filter((u, uIndex) => index != uIndex))} > </i>
+                            <i className="fa fa-solid fa-trash" 
+                                //onClick={() => setToDoList(toDoList.filter(tarea => tarea != tarea.id))}  esto serìa para el antiguo ejercicio, ahora tengo q borrar con el id de cada tarea. 
+                                onClick={()=>eliminarTarea(tarea.id)}> 
+                                </i>
 
                         </div>
                     </div>
