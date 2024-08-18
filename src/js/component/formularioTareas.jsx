@@ -11,7 +11,6 @@ const FormularioTareas = () => {
         toDoList[id] = value;
 
         forceUpdate();
-
     }
 
     const [inputValor, setInputValor] = useState('');
@@ -19,50 +18,47 @@ const FormularioTareas = () => {
     const [toDoList, setToDoList] = useState([]);
 
 
-    //CREO LAS 4 FUNCIONES PARA USAR FETCH: 
-    //uso la función para crear el usuario con url de la api.
+
 
     const obtenerUsuario = () => {
         fetch("https://playground.4geeks.com/todo/users/alejandraAguirre")
             .then((respuesta) => {
                 console.log(respuesta);
-                if (respuesta.ok === false) { //Le pongo la condición para validar si dicho usuario existe, sino va a funcion crear. 
+                if (respuesta.ok === false) {
                     crearUsuario()
-                } else { //en caso de si encontrar el usario, lo convierte en json. 
+                } else {
                     return respuesta.json()
                 }
             })
             .then((data) => {
                 console.log(data);
-                setToDoList(data.todos)//todos dentro de data es el arreglo y lo quiero guardar en la lista q había creado. 
+                setToDoList(data.todos)
 
             })
-            .catch((error) => { //lo uso para capturar los errores 
+            .catch((error) => {
                 console.log("Solicitud fallida", error);
 
             })
     }
 
 
-    //función para crear el usuario en caso de que se borre de la API dsps de las 24h
     const crearUsuario = () => {
         fetch("https://playground.4geeks.com/todo/users/alejandraAguirre", {
             method: "POST"
-        })//lo unico requerido para crear un usuario nuevo segun api es USER_NAME
+        })
             .then((respuesta) => {
                 console.log(respuesta);
                 return respuesta.json()
-            }) //ya cuando tengo mi usuario creado, accedo de nuevo a obtener usuario. 
+            })
             .then((data) => {
                 obtenerUsuario()
             })
             .catch((error) => {
                 console.log("Petición fallida", error);
-
             })
     }
 
-    //función para agregar la tarea a la api 
+
     const agregarTarea = () => {
         fetch("https://playground.4geeks.com/todo/todos/alejandraAguirre", {
             method: "POST",
@@ -87,7 +83,7 @@ const FormularioTareas = () => {
             })
     }
 
-    //función para eliminar las tareas que tengo ya guardadas en la api 
+   
 
     const eliminarTarea = (id) => { ///id lo paso de manera dinamica para q lo busque lo edite. 
         fetch(`https://playground.4geeks.com/todo/todos/${id}`, {
@@ -100,8 +96,8 @@ const FormularioTareas = () => {
             })
             .then((data) => {
                 obtenerUsuario()
-                
-              
+
+
             })
             .catch((error) => {
                 console.log("No se encontraron tareas", error);
@@ -109,9 +105,6 @@ const FormularioTareas = () => {
     }
 
 
-
-
-    //función para actualizar la tarea guardada en la api. 
 
     const actualizarTareaApi = (id) => {
         fetch(`https://playground.4geeks.com/todo/todos/${id}`, {
@@ -129,14 +122,14 @@ const FormularioTareas = () => {
                 return respuesta.text() //string 
             })
             .then((data) => {
-               actualizar(data.id, data.label)
+                actualizar(data.id, data.label)
             })
             .catch((error) => {
                 console.log("No se encontraron tareas", error);
             })
     }
 
-    const borrarTodasTareas =(id)=>{
+    const borrarTodasTareas = (id) => {
         fetch(`https://playground.4geeks.com/todo/todos/${id}`, {
             method: "DELETE",
         })
@@ -147,15 +140,13 @@ const FormularioTareas = () => {
             })
             .then((data) => {
                 obtenerUsuario()
-                
-              
+
+
             })
             .catch((error) => {
                 console.log("No se encontraron tareas", error);
             })
     }
-
-
 
 
     useEffect(() => {
@@ -175,9 +166,7 @@ const FormularioTareas = () => {
                 alert('Introduzca una tarea correcta')
             }
 
-            //  setActualizar(true); antes se encargaba de agregar la nueva tarea a la lista
-            //setInputValor("") lo tengo ya añadido en la función agregar tarea a la api. 
-            agregarTarea() //ahora lo sustituyo porque la tarea vendra de fuera, se guarda en la api
+            agregarTarea() 
 
 
         }
@@ -202,8 +191,8 @@ const FormularioTareas = () => {
                             type="texto"
                             placeholder={toDoList[tarea]}
                             value={tarea.label}
-                            
-                            onChange={(e) => Modificar(e.target.value,id)}
+
+                            onChange={(e) => Modificar(e.target.value, id)}
                             disabled={actualizar} />
 
                         <div className="iconos"  >
@@ -215,10 +204,10 @@ const FormularioTareas = () => {
                             </i>
 
                         </div>
-                      
+
                     </div>
-                    
-                     
+
+
                 )}
 
             </ul>
@@ -228,7 +217,7 @@ const FormularioTareas = () => {
             {
                 toDoList.length != 1 && <div className="valores-tarea">Tienes {toDoList.length} tareas</div>
             }
-            <button className="boton-borrar_todo" onClick={()=>toDoList.map(tarea =>borrarTodasTareas(tarea.id))}>Borra todas las tareas</button>
+            <button className="boton-borrar_todo" onClick={() => toDoList.map(tarea => borrarTodasTareas(tarea.id))}>Borra todas las tareas</button>
         </div >
 
     );

@@ -2,11 +2,6 @@ import React, { useState } from "react";
 import Encabezado from "./encabezado";
 import FormularioTareas from "./formularioTareas";
 
-
-
-
-
-//create your first component
 const Home = () => {
 
 	return (
